@@ -3,7 +3,7 @@ if ($PSVersionTable.PSVersion.Major -le 5){
     Invoke-RestMethod https://aka.ms/install-powershell.ps1 -OutFile .\install-powershell.ps1
     $FullName = (GCI .\install-powershell.ps1).FullName
     Start-Process -Verb RunAs -Wait powershell -ArgumentList '-ExecutionPolicy Bypass',"-File ""$FullName"" -UseMSI -quiet" 
-    $ScriptBlock = {iex (new-object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/RamblingCookieMonster/PSDepend/master/Examples/Install-PSDepend.ps1')}
+    $ScriptBlock = {iex (new-object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/mwgevans115/MyScripts/main/Scripts/Install-Powershell7.ps1')}
     Start-Process pwsh -Verb RunAs -ArgumentList "-ExecutionPolicy Bypass","-NoExit","-Command $ScriptBlock"
 } else { 
     Write-Host -ForegroundColor Red  "Running in core"
