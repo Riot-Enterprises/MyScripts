@@ -1,0 +1,27 @@
+#!/usr/bin/env pwsh
+$RegEx = '^(build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test)!?(\([a-z ]+\))?(: )([^\n]+)(\n{1}?((\n{1}[^\n]+)+)?)?(\n{1}(\n{1}[^\n]+)+)?$'
+$CommitMsg = Get-Content $args[0]
+write-output "This is a pre-commit powershell call"
+write-output "======================================="
+
+if (!($CommitMsg -match $RegEx)){
+    write-error "Commit message $CommitMsg doesn't conform to conventional commits"
+    exit 1
+}
+
+
+exit 0
+#if (!($CommitMsg -matches $RegEx)){
+#    
+#}
+<#
+    # example:
+    # feat(apikey): added the ability to add api key to configuration
+    pattern = r'(build|ci|docs|feat|fix|perf|refactor|style|test|chore|revert)(\([\w\-]+\))?:\s.*'
+    filename = sys.argv[1]
+    ss = open(filename, 'r').read()
+    m = re.match(pattern, ss)
+    if m == None: raise Exception("conventional commit validation failed")
+
+
+#>

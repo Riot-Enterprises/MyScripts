@@ -1,0 +1,56 @@
+#!/usr/bin/env pwsh
+write-output "This is a pre-commit powershell call"
+write-output "======================================= Validating EMail"
+
+# Verify user's Git config has appropriate email address
+if ($env:GIT_AUTHOR_EMAIL -notmatch '@(non\.)?madspaniels\.co\.uk$') {
+    Write-Warning "Your Git email address '$env:GIT_AUTHOR_EMAIL' is not configured correctly."
+    Write-Warning "It should end with '@acme.com' or '@non.acme.com'."
+    Write-Warning "Use the command: 'git config --global user.email <name@acme.com>' to set it correctly."
+    exit 1
+}
+
+write-output "======================================= Validating Syntax"
+$STASH_NAME="pre-commit-$(Get-Date -Format o)"
+git stash save -q --keep-index $STASH_NAME 
+
+Import-Module -Name PSScriptAnalyzer
+
+$changes = git diff --cached --name-only | Where-Object {$_.EndsWith('.ps1')}
+$output = @()
+
+foreach ($change in $changes)
+{
+    write-output "Running ScriptAnalyzer against: $change"
+    $winPath = $change.replace("/", "\")
+    $winPath = ".\$winPath"
+    $out = Invoke-ScriptAnalyzer -Path $winPath
+    $output += $out
+}
+
+write-output "======================================="
+
+if ($output.Count -ne 0)
+{
+    Write-Output "Basic scripting errors were found in updated scripts. fix or use git commit --no-verify"
+    $output.Message
+    exit 1
+}
+
+$STASHES=$(git stash list)
+
+if ($STASHES[0].endswith("$STASH_NAME") ){
+    git stash pop -q
+}
+
+exit 0
+
+
+
+# Test prospective commit
+<#
+STASHES=$(git stash list)
+if [[ $STASHES == "$STASH_NAME" ]]; then
+  git stash pop -q
+fi
+#>
