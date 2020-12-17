@@ -83,6 +83,7 @@ $StopWatch.ScriptLogic = [System.Diagnostics.Stopwatch]::StartNew()
 
 #
 $StopWatch.InstallPWSH = [System.Diagnostics.Stopwatch]::StartNew()
+#$ScriptBlock = [Scriptblock]::Create("$(Invoke-RestMethod https://aka.ms/install-powershell.ps1)")
 Invoke-Expression "& { $(Invoke-RestMethod https://aka.ms/install-powershell.ps1) } -UseMSI -Quiet"
 $StopWatch.InstallPWSH.Stop()
 $StopWatch.InstallVSCode = [System.Diagnostics.Stopwatch]::StartNew()
