@@ -1,0 +1,93 @@
+<#
+aaron-bond.better-comments
+almenon.arepl
+amazonwebservices.aws-toolkit-vscode
+aws-scripting-guy.cform
+ban.spellright
+bierner.markdown-preview-github-styles
+CoenraadS.bracket-pair-colorizer-2
+DanielThielking.aws-cloudformation-yaml
+DavidAnson.vscode-markdownlint
+DotJoshJohnson.xml
+eamodio.gitlens
+emilast.LogFileHighlighter
+formulahendry.code-runner
+hediet.vscode-drawio
+kddejong.vscode-cfn-lint
+kiteco.kite
+mechatroner.rainbow-csv
+ms-dotnettools.csharp
+ms-mssql.mssql
+ms-python.python
+ms-toolsai.jupyter
+ms-vscode.powershell
+ms-vscode.vscode-typescript-tslint-plugin
+njpwerner.autodocstring
+nobuhito.printcode
+oderwat.indent-rainbow
+PKief.material-icon-theme
+redhat.vscode-yaml
+ritwickdey.LiveServer
+ryanluker.vscode-coverage-gutters
+ryu1kn.partial-diff
+shd101wyy.markdown-preview-enhanced
+SirTori.indenticator
+tuxtina.json2yaml
+Tyriar.shell-launcher
+usernamehw.errorlens
+vangware.dark-plus-material
+vincentkos.snippet-creator
+vscode-icons-team.vscode-icons
+wmontalvo.vsc-jsonsnippets
+woodywoodsta.vscode-material-syntax-dark
+yzhang.markdown-all-in-one
+#>
+
+$extensionList = (
+    'aaron-bond.better-comments',
+    'almenon.arepl',
+    'amazonwebservices.aws-toolkit-vscode',
+    'aws-scripting-guy.cform',
+    'ban.spellright',
+    'bierner.markdown-preview-github-styles',
+    'CoenraadS.bracket-pair-colorizer-2',
+    'DanielThielking.aws-cloudformation-yaml',
+    'DavidAnson.vscode-markdownlint',
+    'DotJoshJohnson.xml',
+    'eamodio.gitlens',
+    'emilast.LogFileHighlighter',
+    'formulahendry.code-runner',
+    'hediet.vscode-drawio',
+    'kddejong.vscode-cfn-lint',
+    'kiteco.kite',
+    'mechatroner.rainbow-csv',
+    'ms-dotnettools.csharp',
+    'ms-mssql.mssql',
+    'ms-python.python',
+    'ms-toolsai.jupyter',
+    'ms-vscode.powershell',
+    'ms-vscode.vscode-typescript-tslint-plugin',
+    'njpwerner.autodocstring',
+    'nobuhito.printcode',
+    'oderwat.indent-rainbow',
+    'PKief.material-icon-theme',
+    'redhat.vscode-yaml',
+    'ritwickdey.LiveServer',
+    'ryanluker.vscode-coverage-gutters',
+    'ryu1kn.partial-diff',
+    'shd101wyy.markdown-preview-enhanced',
+    'SirTori.indenticator',
+    'tuxtina.json2yaml',
+    'Tyriar.shell-launcher',
+    'usernamehw.errorlens',
+    'vangware.dark-plus-material',
+    'vincentkos.snippet-creator',
+    'vscode-icons-team.vscode-icons',
+    'wmontalvo.vsc-jsonsnippets',
+    'woodywoodsta.vscode-material-syntax-dark',
+    'yzhang.markdown-all-in-one'
+)
+
+foreach ($Extension in $ExtensionList) {
+    code --install-extension $Extension
+}
