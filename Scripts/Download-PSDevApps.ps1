@@ -24,12 +24,14 @@ $Repositories = @(
     #@{Repo = 'PowerShell/PowerShell'; Regex = '^PowerShell-\d*\.\d*\.\d*-win-x64\.msi$'},
     #@{Repo = 'Microsoft/vscode'; Regex = '.*'}
 )
-function DownloadFile ($URI) {
-    $temp = [System.IO.Path]::GetTempFileName()
-    $Response = Invoke-WebRequest -Uri $URI -PassThru -OutFile $temp -UseBasicParsing
-    $fileName = $Response.BaseResponse.ResponseUri.Segments | Select-Object -Last 1
+function DownloadFile ($URI) { 
+    $fileName = ([uri]$URI).Segments | Select-Object -Last 1
     $destination = Join-Path (Get-DownloadFolderPath) $fileName
-    Move-Item $temp $destination -Force
+    Invoke-WebRequest -Uri $URI -PassThru -OutFile $destination -UseBasicParsing
+    #$fileName = $Response.BaseResponse.ResponseUri.Segments | Select-Object -Last 1
+    #$destination = Join-Path (Get-DownloadFolderPath) $fileName
+    #Move-Item $temp $destination -Force
+    return (Get-ChildItem $destination)
 }
 
 
