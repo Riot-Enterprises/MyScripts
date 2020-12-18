@@ -19,14 +19,14 @@ function Get-DownloadFolderPath {
 }
 
 $Repositories = @(
-    @{Repo = 'git-for-windows/git'; Regex = 'Git-\d*\.\d*\.\d*.\d*-64-bit\.exe' ,'/VERYSILENT /NORESTART'},
-    @{Repo ='microsoft/terminal'; Regex = 'Microsoft.WindowsTerminal_\d*\.\d*\.\d*.\d*_.*\.msixbundle$'},
+    @{Repo = 'git-for-windows/git'; Regex = 'Git-\d*\.\d*\.\d*.\d*-64-bit\.exe' , '/VERYSILENT /NORESTART' },
+    @{Repo = 'microsoft/terminal'; Regex = 'Microsoft.WindowsTerminal_\d*\.\d*\.\d*.\d*_.*\.msixbundle$' },
     #Add-AppxPackage Bundle
-    @{Repo = 'PowerShell/PowerShell'; Regex = '^PowerShell-\d*\.\d*\.\d*-win-x64\.msi$'}#,
+    @{Repo = 'PowerShell/PowerShell'; Regex = '^PowerShell-\d*\.\d*\.\d*-win-x64\.msi$' }#,
     #$ArgumentList=@("/i", $packagePath, "/quiet","ENABLE_PSREMOTING=1","ADD_EXPLORER_CONTEXT_MENU_OPENPOWERSHELL=1")
     #Start-Process msiexec -ArgumentList $ArgumentList -Wait -PassThru
     #@{Repo = 'Microsoft/vscode'; Regex = '.*' }
-    ,@{Repo = 'microsoft/cascadia-code'; Regex = 'CascadiaCode-\d*\.\d*\.zip'}
+    , @{Repo = 'microsoft/cascadia-code'; Regex = 'CascadiaCode-\d*\.\d*\.zip' }
 )
 
 <#
@@ -46,10 +46,10 @@ $Repositories = @(
                 }
                 $process = Start-Process msiexec -ArgumentList $ArgumentList -Wait -PassThru
 #>
-function DownloadFile ($URI) { 
+function DownloadFile ($URI) {
     $fileName = ([uri]$URI).Segments | Select-Object -Last 1
     $destination = Join-Path (Get-DownloadFolderPath) $fileName
-    if (-not (Test-Path $destination)){
+    if (-not (Test-Path $destination)) {
         Invoke-WebRequest -Uri $URI -OutFile $destination -UseBasicParsing
     }
     #$fileName = $Response.BaseResponse.ResponseUri.Segments | Select-Object -Last 1
@@ -75,11 +75,41 @@ function DownloadFile ($URI) {
             break
         }
 #>
+
+<#
+$FONTS = 0x14
+$Path=".\fonts-to-be-installed"
+$objShell = New-Object -ComObject Shell.Application
+$objFolder = $objShell.Namespace($FONTS)
+$Fontdir = dir $Path
+foreach($File in $Fontdir) {
+if(!($file.name -match "pfb$"))
+{
+$try = $true
+$installedFonts = @(Get-ChildItem c:\windows\fonts | Where-Object {$_.PSIsContainer -eq $false} | Select-Object basename)
+$name = $File.baseName
+
+foreach($font in $installedFonts)
+{
+$font = $font -replace "_", ""
+$name = $name -replace "_", ""
+if($font -match $name)
+{
+$try = $false
+}
+}
+if($try)
+{
+$objFolder.CopyHere($File.fullname)
+}
+}
+}
+#>
 function DownloadFileRedirect ($URI) {
     ((Invoke-WebRequest -Method HEAD -Uri $URI).Headers.'Content-Disposition')[0] -match '".*"'
-    $fileName = $Matches[0].Replace('"','')
+    $fileName = $Matches[0].Replace('"', '')
     $destination = Join-Path (Get-DownloadFolderPath) $fileName
-    if (-not (Test-Path $destination)){
+    if (-not (Test-Path $destination)) {
         Invoke-WebRequest -Uri $URI -OutFile $destination -UseBasicParsing
     }
     #Invoke-WebRequest -Uri $URI -OutFile $destination -UseBasicParsing
@@ -96,9 +126,10 @@ foreach ($Repository in $Repositories) {
     catch {
         $Failure = $_.Exception.Response
     }
+    If ($Failure) { Write-Output "Error" }
     If ($Response.StatusCode -eq 200) {
         $asset = $RestResponse.assets | Where-Object { $_.Name -match $Repository.Regex }
-        Write-Host $asset.name
+        Write-Output $asset.name
         DownloadFile($asset.browser_download_url)
     }
 }
@@ -110,7 +141,7 @@ DownloadFileRedirect('https://vscode-update.azurewebsites.net/latest/win32-x64/s
 #    $_.name -like "* Value*"
 #} | Select-Object Name, Value
 
-<# 
+<#
     foreach ($asset in (Invoke-RestMethod "https://api.github.com/repos/$($Repository.Repo)/releases/latest").assets)
     {
         sleep -Seconds 5
@@ -133,6 +164,6 @@ DownloadFileRedirect('https://vscode-update.azurewebsites.net/latest/win32-x64/s
             $newver = $asset.name
         } #>
 #}
- 
+
 #} #>
 
