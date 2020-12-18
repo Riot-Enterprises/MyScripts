@@ -19,22 +19,74 @@ function Get-DownloadFolderPath {
 }
 
 $Repositories = @(
-    @{Repo = 'git-for-windows/git'; Regex = 'Git-\d*\.\d*\.\d*.\d*-64-bit\.exe' }#,
-    #@{Repo ='microsoft/terminal'; Regex = 'Microsoft.WindowsTerminal_\d*\.\d*\.\d*.\d*_.*\.msixbundle$'},
-    #@{Repo = 'PowerShell/PowerShell'; Regex = '^PowerShell-\d*\.\d*\.\d*-win-x64\.msi$'},
-    #@{Repo = 'Microsoft/vscode'; Regex = '.*'}
+    @{Repo = 'git-for-windows/git'; Regex = 'Git-\d*\.\d*\.\d*.\d*-64-bit\.exe' ,'/VERYSILENT /NORESTART'},
+    @{Repo ='microsoft/terminal'; Regex = 'Microsoft.WindowsTerminal_\d*\.\d*\.\d*.\d*_.*\.msixbundle$'},
+    #Add-AppxPackage Bundle
+    @{Repo = 'PowerShell/PowerShell'; Regex = '^PowerShell-\d*\.\d*\.\d*-win-x64\.msi$'}#,
+    #$ArgumentList=@("/i", $packagePath, "/quiet","ENABLE_PSREMOTING=1","ADD_EXPLORER_CONTEXT_MENU_OPENPOWERSHELL=1")
+    #Start-Process msiexec -ArgumentList $ArgumentList -Wait -PassThru
+    #@{Repo = 'Microsoft/vscode'; Regex = '.*' }
+    ,@{Repo = 'microsoft/cascadia-code'; Regex = 'CascadiaCode-\d*\.\d*\.zip'}
 )
+
+<#
+        $MSIArguments = @()
+        if($AddExplorerContextMenu) {
+            $MSIArguments += "ADD_EXPLORER_CONTEXT_MENU_OPENPOWERSHELL=1"
+        }
+        if($EnablePSRemoting) {
+            $MSIArguments += "ENABLE_PSREMOTING=1"
+        }
+******************************************************8
+            if ($UseMSI -and $Quiet) {
+                Write-Verbose "Performing quiet install"
+                $ArgumentList=@("/i", $packagePath, "/quiet","ENABLE_PSREMOTING=1","ADD_EXPLORER_CONTEXT_MENU_OPENPOWERSHELL=1")
+                if($MSIArguments) {
+                    $ArgumentList+=$MSIArguments
+                }
+                $process = Start-Process msiexec -ArgumentList $ArgumentList -Wait -PassThru
+#>
 function DownloadFile ($URI) { 
     $fileName = ([uri]$URI).Segments | Select-Object -Last 1
     $destination = Join-Path (Get-DownloadFolderPath) $fileName
-    Invoke-WebRequest -Uri $URI -PassThru -OutFile $destination -UseBasicParsing
+    if (-not (Test-Path $destination)){
+        Invoke-WebRequest -Uri $URI -OutFile $destination -UseBasicParsing
+    }
     #$fileName = $Response.BaseResponse.ResponseUri.Segments | Select-Object -Last 1
     #$destination = Join-Path (Get-DownloadFolderPath) $fileName
     #Move-Item $temp $destination -Force
     return (Get-ChildItem $destination)
 }
+(Invoke-WebRequest -Method HEAD -Uri https://vscode-update.azurewebsites.net/latest/win32-x64/stable).Header
 
+<#
+        # On Windows
+        'exe' {
+            $exeArgs = '/verysilent /tasks=addtopath'
+            if ($EnableContextMenus) {
+                $exeArgs = '/verysilent /tasks=addcontextmenufiles,addcontextmenufolders,addtopath'
+            }
 
+            if (-not $PSCmdlet.ShouldProcess("$installerPath $exeArgs", 'Start-Process -Wait')) {
+                break
+            }
+
+            Start-Process -Wait $installerPath -ArgumentList $exeArgs
+            break
+        }
+#>
+function DownloadFileRedirect ($URI) {
+    ((Invoke-WebRequest -Method HEAD -Uri $URI).Headers.'Content-Disposition')[0] -match '".*"'
+    $fileName = $Matches[0].Replace('"','')
+    $destination = Join-Path (Get-DownloadFolderPath) $fileName
+    if (-not (Test-Path $destination)){
+        Invoke-WebRequest -Uri $URI -OutFile $destination -UseBasicParsing
+    }
+    #Invoke-WebRequest -Uri $URI -OutFile $destination -UseBasicParsing
+    #$fileName = $Response.BaseResponse.ResponseUri.Segments | Select-Object -Last 1
+    #$destination = Join-Path (Get-DownloadFolderPath) $fileName
+    #Move-Item $temp $destination -Force
+}
 foreach ($Repository in $Repositories) {
     Write-Warning -Message $Repository.Repo
     try {
@@ -50,6 +102,10 @@ foreach ($Repository in $Repositories) {
         DownloadFile($asset.browser_download_url)
     }
 }
+
+DownloadFileRedirect('https://vscode-update.azurewebsites.net/latest/win32-x64/stable')
+
+
 #$Response.InputFields | Where-Object {
 #    $_.name -like "* Value*"
 #} | Select-Object Name, Value
