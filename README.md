@@ -184,15 +184,15 @@ Project Link: [https://github.com/riot-enterprises/myscripts](https://github.com
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/riot-enterprises/myscripts.svg?style=for-the-badge
+[contributors-shield]: https://img.shields.io/github/contributors/riot-enterprises/myscripts.svg?style=plastic
 [contributors-url]: https://github.com/riot-enterprises/myscripts/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/riot-enterprises/myscripts.svg?style=for-the-badge
+[forks-shield]: https://img.shields.io/github/forks/riot-enterprises/myscripts.svg?style=plastic
 [forks-url]: https://github.com/riot-enterprises/myscripts/network/members
-[stars-shield]: https://img.shields.io/github/stars/riot-enterprises/myscripts.svg?style=for-the-badge
+[stars-shield]: https://img.shields.io/github/stars/riot-enterprises/myscripts.svg?style=plastic
 [stars-url]: https://github.com/riot-enterprises/myscripts/stargazers
-[issues-shield]: https://img.shields.io/github/issues/riot-enterprises/myscripts.svg?style=for-the-badge
+[issues-shield]: https://img.shields.io/github/issues/riot-enterprises/myscripts.svg?style=plastic
 [issues-url]: https://github.com/riot-enterprises/myscripts/issues
-[license-shield]: https://img.shields.io/github/license/riot-enterprises/myscripts.svg?style=for-the-badge
+[license-shield]: https://img.shields.io/github/license/riot-enterprises/myscripts.svg?style=plastic
 [license-url]: https://github.com/riot-enterprises/myscripts/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/riot-enterprises
