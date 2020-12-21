@@ -186,7 +186,7 @@ Project Link: [https://github.com/riot-enterprises/myscripts](https://github.com
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 [contributors-shield]: https://img.shields.io/github/contributors/riot-enterprises/myscripts.svg?style=for-the-badge
 [contributors-url]: https://github.com/riot-enterprises/myscripts/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/riot-enterprises/myscrtipts.svg?style=for-the-badge
+[forks-shield]: https://img.shields.io/github/forks/riot-enterprises/myscripts.svg?style=for-the-badge
 [forks-url]: https://github.com/riot-enterprises/myscripts/network/members
 [stars-shield]: https://img.shields.io/github/stars/riot-enterprises/myscripts.svg?style=for-the-badge
 [stars-url]: https://github.com/riot-enterprises/myscripts/stargazers
